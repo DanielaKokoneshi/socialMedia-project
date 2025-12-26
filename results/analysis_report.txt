@@ -1,0 +1,37 @@
+============================================================
+YouTube IT Skills Trend Analysis Report
+============================================================
+
+Generated: 2025-12-24 18:39:22
+
+EXECUTIVE SUMMARY
+------------------------------------------------------------
+Total videos analyzed: 2202
+Date range: 2020 - 2025
+Topics analyzed: 6
+
+KEY FINDINGS
+------------------------------------------------------------
+
+Most popular topics (by video count):
+  - web development: 404 videos
+  - python programming: 402 videos
+  - cybersecurity: 378 videos
+  - machine learning: 373 videos
+  - data science: 341 videos
+
+Topics with highest average views:
+  - web development: 1,484,875 average views
+  - python programming: 1,246,816 average views
+  - machine learning: 807,819 average views
+  - data science: 696,048 average views
+  - cybersecurity: 547,201 average views
+
+Growth Trends:
+  Fastest growing topics (by video count):
+    - cybersecurity: 144.2% growth
+    - machine learning: 107.1% growth
+    - web development: 61.6% growth
+
+============================================================
+For detailed visualizations, see the PNG files in this directory.

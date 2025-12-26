@@ -1,0 +1,6 @@
+google-api-python-client==2.108.0
+pandas==2.1.4
+matplotlib==3.8.2
+seaborn==0.13.0
+python-dotenv==1.0.0
+
