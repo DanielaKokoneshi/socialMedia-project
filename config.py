@@ -4,17 +4,14 @@ Configuration management for YouTube Data API access.
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+
 load_dotenv()
 
-# YouTube Data API Configuration
 YOUTUBE_API_KEY = os.getenv('YOUTUBE_API_KEY', '')
 
-# API Settings
 API_SERVICE_NAME = 'youtube'
 API_VERSION = 'v3'
 
-# Data Collection Settings
 IT_TOPICS = [
     'cybersecurity tutorial',
     'machine learning tutorial',

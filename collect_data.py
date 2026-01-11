@@ -44,7 +44,7 @@ def search_videos(youtube, query, max_results=50, published_after=None,
             'part': 'snippet',
             'q': query,
             'type': config.VIDEO_TYPE,
-            'maxResults': min(max_results, 50),  # API limit is 50
+            'maxResults': min(max_results, 50), 
             'order': order,
             'relevanceLanguage': config.LANGUAGE,
         }
@@ -149,7 +149,7 @@ def collect_topic_data(youtube, topic, max_queries=10):
         query_count += 1
         print(f"  Query {query_count}/{max_queries}...")
         
-        # Search for videos
+        
         search_response = search_videos(
             youtube, 
             topic,
@@ -163,12 +163,10 @@ def collect_topic_data(youtube, topic, max_queries=10):
             print(f"  No results or error for query {query_count}")
             break
         
-        # Extract video IDs from search results
         video_ids = [item['id']['videoId'] 
                     for item in search_response.get('items', []) 
                     if item['id']['kind'] == 'youtube#video']
-        
-        # Filter out duplicates
+       
         new_video_ids = [vid for vid in video_ids if vid not in seen_video_ids]
         if not new_video_ids:
             print(f"  No new videos found in query {query_count}")
@@ -176,24 +174,20 @@ def collect_topic_data(youtube, topic, max_queries=10):
         
         seen_video_ids.update(new_video_ids)
         
-        # Get detailed video information
         print(f"  Fetching details for {len(new_video_ids)} videos...")
         details_response = get_video_details(youtube, new_video_ids)
         
         if details_response:
             for video_item in details_response.get('items', []):
                 metadata = extract_video_metadata(video_item)
-                metadata['topic'] = topic  # Add topic label
+                metadata['topic'] = topic 
                 all_videos.append(metadata)
         
-        # Check for next page
         next_page_token = search_response.get('nextPageToken')
         if not next_page_token:
             print(f"  No more pages available for topic: {topic}")
             break
         
-        # Rate limiting: API quota is 100 units per search, 1 unit per video details
-        # Be conservative and add a small delay
         time.sleep(0.1)
     
     print(f"  Collected {len(all_videos)} unique videos for topic: {topic}")
@@ -216,16 +210,14 @@ def main():
     print("=" * 60)
     print("YouTube IT Skills Data Collection")
     print("=" * 60)
-    
-    # Create YouTube API client
+   
     try:
         youtube = create_youtube_client()
         print("YouTube API client created successfully")
     except Exception as e:
         print(f"Error creating YouTube client: {e}")
         return
-    
-    # Collect data for each topic
+ 
     all_data = []
     
     for topic in config.IT_TOPICS:
@@ -237,18 +229,15 @@ def main():
             )
             all_data.extend(topic_videos)
             
-            # Save after each topic to avoid data loss
             timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
             save_data(all_data, f'youtube_data_{timestamp}.json')
-            
-            # Rate limiting between topics
+
             time.sleep(1)
             
         except Exception as e:
             print(f"Error collecting data for topic '{topic}': {e}")
             continue
-    
-    # Final save
+
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     save_data(all_data, f'youtube_data_final_{timestamp}.json')
     

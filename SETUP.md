@@ -46,7 +46,7 @@ With default settings:
 - Each topic searches up to 10 times (10 × 100 = 1,000 units)
 - Each search can return up to 50 videos (50 × 1 = 50 units per search)
 - Total per topic: ~1,500 units
-- With 10 topics: ~15,000 units (exceeds default quota)
+
 
 **Recommendations**:
 - Reduce `MAX_QUERIES_PER_TOPIC` in `config.py` if needed

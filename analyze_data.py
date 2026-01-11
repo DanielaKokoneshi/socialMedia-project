@@ -33,17 +33,14 @@ def load_cleaned_data(data_dir=None):
     if data_dir is None:
         data_dir = config.PROCESSED_DATA_DIR
     
-    # Try to load the most recent CSV file
     csv_files = glob.glob(os.path.join(data_dir, '*.csv'))
     
     if csv_files:
-        # Get the most recent file
         latest_file = max(csv_files, key=os.path.getctime)
         print(f"Loading data from: {os.path.basename(latest_file)}")
         df = pd.read_csv(latest_file)
         return df
-    
-    # Fallback to JSON
+
     json_files = glob.glob(os.path.join(data_dir, '*.json'))
     if json_files:
         latest_file = max(json_files, key=os.path.getctime)
@@ -70,10 +67,8 @@ def analyze_publication_trends(df):
     print("Analysis 1: Publication Trends")
     print("=" * 60)
     
-    # Count videos by topic and year
     publication_trends = df.groupby(['main_topic', 'publication_year']).size().reset_index(name='video_count')
-    
-    # Pivot for easier visualization
+
     trends_pivot = publication_trends.pivot(index='publication_year', 
                                            columns='main_topic', 
                                            values='video_count').fillna(0)
@@ -98,7 +93,6 @@ def analyze_engagement_trends(df):
     print("Analysis 2: Engagement Trends")
     print("=" * 60)
     
-    # Calculate average metrics by topic and year
     engagement = df.groupby(['main_topic', 'publication_year']).agg({
         'view_count': 'mean',
         'like_count': 'mean',
@@ -125,12 +119,10 @@ def analyze_growth_trends(df):
     print("\n" + "=" * 60)
     print("Analysis 3: Growth/Decline Trends")
     print("=" * 60)
-    
-    # Calculate year-over-year changes
+
     current_year = datetime.now().year
     min_year = current_year - 5
-    
-    # Group by topic and year
+
     yearly_stats = df.groupby(['main_topic', 'publication_year']).agg({
         'video_id': 'count',
         'view_count': 'mean',
@@ -138,8 +130,7 @@ def analyze_growth_trends(df):
         'avg_views_per_year': 'mean'
     }).reset_index()
     yearly_stats.columns = ['topic', 'year', 'video_count', 'avg_views', 'avg_likes', 'avg_views_per_year']
-    
-    # Calculate growth rates
+
     growth_data = []
     for topic in yearly_stats['topic'].unique():
         topic_data = yearly_stats[yearly_stats['topic'] == topic].sort_values('year')
@@ -324,26 +315,21 @@ def main():
     print("=" * 60)
     print("YouTube IT Skills Trend Analysis")
     print("=" * 60)
-    
-    # Load cleaned data
+
     df = load_cleaned_data()
     
     if df is None or df.empty:
         print("No data available for analysis.")
         return
-    
-    # Convert publication_year to int for proper sorting
+   
     df['publication_year'] = df['publication_year'].astype(int)
     
-    # Perform analyses
     publication_trends, trends_pivot = analyze_publication_trends(df)
     engagement = analyze_engagement_trends(df)
     growth_df, yearly_stats = analyze_growth_trends(df)
-    
-    # Create visualizations
+
     create_visualizations(df, publication_trends, trends_pivot, engagement, yearly_stats)
     
-    # Generate summary report
     generate_summary_report(df, publication_trends, engagement, growth_df)
     
     print("\n" + "=" * 60)

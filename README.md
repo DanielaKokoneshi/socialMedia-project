@@ -80,7 +80,6 @@ This means approximately 100 search queries per day with the default quota. For 
 
 ## Notes
 
-- The prototype is intended for analysis and experimentation, not for production use.
 - Data collection respects YouTube's Terms of Service and API usage policies.
 - Results are based on publicly available video metadata only.
 

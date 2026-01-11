@@ -104,13 +104,11 @@ def normalize_view_counts(df):
         DataFrame with normalized view counts
     """
     df = df.copy()
-    
-    # Calculate years since publication
+ 
     current_year = datetime.now().year
     df['years_since_publication'] = current_year - df['publication_year'] + 1
     df['years_since_publication'] = df['years_since_publication'].clip(lower=1)
-    
-    # Calculate average views per year
+
     df['avg_views_per_year'] = df['view_count'] / df['years_since_publication']
     df['avg_views_per_year'] = df['avg_views_per_year'].round(2)
     
@@ -129,21 +127,17 @@ def handle_missing_data(df):
     """
     df = df.copy()
     
-    # Fill missing numeric values with 0
     numeric_columns = ['view_count', 'like_count', 'comment_count']
     for col in numeric_columns:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0).astype(int)
-    
-    # Fill missing string values
+   
     string_columns = ['title', 'channel_title', 'description']
     for col in string_columns:
         if col in df.columns:
             df[col] = df[col].fillna('Unknown')
     
-    # Handle missing publication dates
-    df = df[df['publication_year'].notna()]  # Remove rows without valid dates
-    
+    df = df[df['publication_year'].notna()] 
     return df
 
 
@@ -194,7 +188,7 @@ def clean_data(df):
     df['engagement_rate'] = (df['like_count'] / df['view_count'].replace(0, 1) * 100).round(2)
     df['engagement_rate'] = df['engagement_rate'].fillna(0)
     
-    # Extract main topic from topic string (remove "tutorial" suffix)
+
     df['main_topic'] = df['topic'].str.replace(' tutorial', '', case=False)
     
     print(f"\nFinal record count: {len(df)}")
@@ -217,12 +211,11 @@ def save_cleaned_data(df, filename=None):
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         filename = f'cleaned_youtube_data_{timestamp}'
     
-    # Save as CSV
     csv_path = os.path.join(config.PROCESSED_DATA_DIR, f'{filename}.csv')
     df.to_csv(csv_path, index=False, encoding='utf-8')
     print(f"\nCleaned data saved to CSV: {csv_path}")
     
-    # Save as JSON
+
     json_path = os.path.join(config.PROCESSED_DATA_DIR, f'{filename}.json')
     df.to_json(json_path, orient='records', indent=2, date_format='iso')
     print(f"Cleaned data saved to JSON: {json_path}")
@@ -230,23 +223,18 @@ def save_cleaned_data(df, filename=None):
 
 def main():
     """Main function to clean and prepare data."""
-    # Load raw data
     raw_data = load_raw_data()
     
     if not raw_data:
         print("No data to clean. Please run collect_data.py first.")
         return
     
-    # Convert to DataFrame
     df = pd.DataFrame(raw_data)
-    
-    # Clean data
+
     cleaned_df = clean_data(df)
     
-    # Save cleaned data
     save_cleaned_data(cleaned_df)
     
-    # Print summary statistics
     print("\n" + "=" * 60)
     print("Data Summary")
     print("=" * 60)
