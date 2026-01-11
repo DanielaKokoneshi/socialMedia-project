@@ -48,11 +48,6 @@ With default settings:
 - Total per topic: ~1,500 units
 
 
-**Recommendations**:
-- Reduce `MAX_QUERIES_PER_TOPIC` in `config.py` if needed
-- Run data collection over multiple days
-- Request a quota increase from Google Cloud Console
-
 ## Output Files
 
 - **Raw data**: `data/raw/youtube_data_*.json`

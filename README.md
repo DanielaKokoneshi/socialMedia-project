@@ -73,11 +73,6 @@ The YouTube Data API v3 has the following default quota limits:
 - **Search request**: 100 units per request
 - **Video details request**: 1 unit per request
 
-This means approximately 100 search queries per day with the default quota. For larger datasets, consider:
-- Requesting a quota increase from Google Cloud Console
-- Implementing rate limiting and caching
-- Collecting data over multiple days
-
 ## Notes
 
 - Data collection respects YouTube's Terms of Service and API usage policies.
